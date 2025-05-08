@@ -47,11 +47,11 @@ else:
 def check_env(env_name, default):
     val = os.getenv(env_name, default)
     if val.upper() in ('1', 'YES', 'TRUE'):
-       return True
+        return True
     elif val.upper() in ('0', 'NO', 'FALSE'):
-       return False
+        return False
     else:
-       raise Exception(f"Unsupported environment value {env_name}={val}")
+        raise Exception(f"Unsupported environment value {env_name}={val}")
 
 LINK_FREETDS_STATICALLY = check_env('LINK_FREETDS_STATICALLY', 'YES')
 LINK_OPENSSL = check_env('LINK_OPENSSL', 'YES')
@@ -259,15 +259,15 @@ def ext_modules():
 
     ext_modules = [
         Extension('pymssql._mssql', [join('src', 'pymssql', '_mssql.%s' % source_extension)],
-            extra_compile_args = [ '-DMSDBLIB' ],
-            include_dirs = include_dirs,
-            library_dirs = library_dirs,
-        ),
+                  extra_compile_args = [ '-DMSDBLIB' ],
+                  include_dirs = include_dirs,
+                  library_dirs = library_dirs,
+                  ),
         Extension('pymssql._pymssql', [join('src', 'pymssql', '_pymssql.%s' % source_extension)],
-            extra_compile_args = [ '-DMSDBLIB' ],
-            include_dirs = include_dirs,
-            library_dirs = library_dirs,
-        ),
+                  extra_compile_args = [ '-DMSDBLIB' ],
+                  include_dirs = include_dirs,
+                  library_dirs = library_dirs,
+                  ),
     ]
     for e in ext_modules:
         e.cython_directives = {'language_level': sys.version_info[0]}
@@ -292,12 +292,12 @@ def mk_long_description(numrev=1):
     return readme + "\n\n" + ''.join(lines).strip()
 
 
+# Create version.h file with the version string
+with open("src/pymssql/version.h", "w") as f:
+    f.write('const char* PYMSSQL_VERSION = "2.3.0";')
+
 setup(
-    use_scm_version = {
-        "write_to": "src/pymssql/version.h",
-        "write_to_template": 'const char* PYMSSQL_VERSION = "{version}";',
-        "local_scheme": "no-local-version",
-    },
+    version='2.3.0',  # Fixed version instead of using SCM
     long_description = mk_long_description(2),
     long_description_content_type = 'text/x-rst',
     platforms = 'any',
